@@ -24,7 +24,7 @@ export const GameControls = memo(() => {
         disabled={paused}
         onClick={reset}
         variant="contained">
-        Reset
+        Retry
       </Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Instructions</DialogTitle>

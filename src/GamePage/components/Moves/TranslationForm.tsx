@@ -3,6 +3,7 @@ import getShortId from 'shortid';
 import { DirectionOptions, MoveType, TranslationMove } from './types';
 import { FormControl, InputLabel, Select, MenuItem, SelectChangeEvent, TextField } from '@mui/material';
 import './Moves.css';
+import { isUndefined } from 'lodash';
 
 interface Props {
   disabled: boolean;
@@ -51,7 +52,7 @@ export const TranslationForm = memo<Props>(({
         label="Steps"
         type="number"
         onChange={onStepsChange}
-        value={move.n || ''}
+        value={isUndefined(move.n) ? '' : move.n}
         disabled={disabled}
         InputProps={{
           inputProps: {

@@ -1,5 +1,6 @@
 import React, { ChangeEventHandler, memo, useCallback, useMemo } from 'react';
 import getShortId from 'shortid';
+import { isUndefined } from 'lodash';
 import { AxisOptions, MoveType, ReflectionMove } from './types';
 import { FormControl, InputLabel, Select, MenuItem, SelectChangeEvent, TextField } from '@mui/material';
 import './Moves.css';
@@ -53,7 +54,7 @@ export const ReflectionForm = memo<Props>(({
      <TextField
        type="number"
        onChange={onNChange}
-       value={move.n || ''}
+       value={isUndefined(move.n) ? '' : move.n}
        disabled={disabled || !move.axis}
        InputProps={{
          inputProps: {
