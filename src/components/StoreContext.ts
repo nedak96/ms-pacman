@@ -25,7 +25,7 @@ export const useGameContext = () => {
   const eatPill = useCallback((tileCoordinates: TileCoordinates) => {
     setPills((prev) => {
       if (
-        isValidTileCoordinates(tileCoordinates) ||
+        !isValidTileCoordinates(tileCoordinates) ||
         !waysMatrix[tileCoordinates.y][tileCoordinates.x]
       ) {
         setGameOver(true);

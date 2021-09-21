@@ -31,11 +31,11 @@ export const RotationForm = memo<Props>(({
         labelId={labelId}
         disabled={disabled}
         onChange={onDegreesChange}
-        value={move.degrees}
+        value={move.degrees || ''}
         displayEmpty
         label="Degrees">
         {Object.values(DegreeOptions).map((t) =>
-          <MenuItem value={t}>{t}</MenuItem>
+          <MenuItem key={t} value={t}>{t}</MenuItem>
         )}
       </Select>
     </FormControl>

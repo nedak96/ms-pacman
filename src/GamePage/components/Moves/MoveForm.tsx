@@ -37,10 +37,10 @@ export const MovesForm: FC<Props> = ({
           labelId={labelId[0]}
           disabled={disabled}
           onChange={onTypeChange}
-          value={move.type}
+          value={move.type || ''}
           label="Type">
           {Object.values(MoveType).map((t) =>
-            <MenuItem value={t}>{t}</MenuItem>
+            <MenuItem key={t} value={t}>{t}</MenuItem>
           )}
         </Select>
       </FormControl>

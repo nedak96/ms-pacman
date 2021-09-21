@@ -40,10 +40,10 @@ export const TranslationForm = memo<Props>(({
           labelId={labelId}
           disabled={disabled}
           onChange={onDirectionChange}
-          value={move.direction}
+          value={move.direction || ''}
           label="Direction">
           {Object.values(DirectionOptions).map((t) =>
-            <MenuItem value={t}>{t}</MenuItem>
+            <MenuItem key={t} value={t}>{t}</MenuItem>
           )}
         </Select>
       </FormControl>
@@ -51,7 +51,7 @@ export const TranslationForm = memo<Props>(({
         label="Steps"
         type="number"
         onChange={onStepsChange}
-        value={move.n}
+        value={move.n || ''}
         disabled={disabled}
         InputProps={{
           inputProps: {
@@ -59,9 +59,6 @@ export const TranslationForm = memo<Props>(({
             min: -29,
             step: 1,
           },
-        }}
-        InputLabelProps={{
-          shrink: true,
         }}
       />
     </>

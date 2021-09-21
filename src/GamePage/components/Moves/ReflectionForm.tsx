@@ -40,10 +40,10 @@ export const ReflectionForm = memo<Props>(({
          labelId={labelId}
          disabled={disabled}
          onChange={onAxisChange}
-         value={move.axis}
+         value={move.axis || ''}
          label="Axis">
          {Object.values(AxisOptions).map((t) =>
-           <MenuItem value={t}>{t}</MenuItem>
+           <MenuItem key={t} value={t}>{t}</MenuItem>
          )}
        </Select>
      </FormControl>
@@ -53,7 +53,7 @@ export const ReflectionForm = memo<Props>(({
      <TextField
        type="number"
        onChange={onNChange}
-       value={move.n}
+       value={move.n || ''}
        disabled={disabled || !move.axis}
        InputProps={{
          inputProps: {

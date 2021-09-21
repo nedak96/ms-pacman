@@ -106,9 +106,7 @@ export const PacManView: FC = memo(() => {
                     coords.push(pacManScreenFromTile({ x, y }));
                   }
                   await next({
-                      to: [
-                        ...coords,
-                      ],
+                      to: coords,
                       config: {
                         duration: 300,
                         easing: easeLinear,
