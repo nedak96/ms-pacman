@@ -1,0 +1,7 @@
+.PacMan {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  transform-origin: center center;
+  z-index: 1000;
+}

@@ -1,0 +1,45 @@
+.MoveForm {
+  display: flex;
+  margin-bottom: 10px;
+  align-items: center;
+}
+
+.MoveForm > * {
+  margin-right: 10px !important;
+}
+
+.TypeCell {
+  width: 181px;
+}
+
+.DirectionCell {
+  width: 150px;
+}
+
+.AxisCell {
+  width: 100px;
+}
+
+.DegreesCell {
+  width: 140px;
+}
+
+.MovesView {
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  width: calc(100% - 40px);
+  margin-top: 30px;
+  padding-top: 5px;
+}
+
+.Controls {
+  display: flex;
+  justify-content: space-between;
+}
+
+.RemoveButton {
+  width: 50px;
+  height: 50px;
+  margin-right: 0 !important;
+}

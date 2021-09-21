@@ -1,0 +1,24 @@
+.MainContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.RowContainer {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.ColumnContainer {
+  overflow: hidden;
+  max-height: 695px;
+  height: 100%;
+  margin-top: 20px;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-width: 560px;
+}

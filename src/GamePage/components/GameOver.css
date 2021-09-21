@@ -1,0 +1,12 @@
+.GameOver {
+  font-family: Joystix;
+  font-size: 48px;
+  color: yellow;
+  position: absolute;
+  -webkit-text-stroke: 2px black;
+  left: 0px;
+  right: 0px;
+  top: 250px;
+  text-align: center;
+  z-index: 10000000;
+}
