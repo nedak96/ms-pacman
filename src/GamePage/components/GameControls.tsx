@@ -30,8 +30,10 @@ export const GameControls = memo(() => {
         <DialogTitle>Instructions</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Ms. Pacman can not be upside down. To translate in a direction, you
-            must be facing that direction.
+            In this game of Ms. Pac-Man, your task is to move her using translations,
+            rotations, and reflections. Remember that Ms. Pacman has to be facing
+            the direction she is moving, and she always has to be “right side up”.
+            Let’s see if you can get the high score!
           </DialogContentText>
         </DialogContent>
         <DialogActions>

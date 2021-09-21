@@ -83,6 +83,7 @@ export const PacManView: FC = memo(() => {
       let y = 23;
       let scale = 0;
       let direction = DirectionOptions.LEFT;
+      let negateZ = 0;
       api.start({
         to: async (next) => {
           for (let i = 0; i < moves.length; i++) {
@@ -94,9 +95,9 @@ export const PacManView: FC = memo(() => {
                 } else {
                   const coords = [];
                   for (let n = 0; n < move.n; n++) {
-                    if (move.direction === DirectionOptions.DOWN) {
+                    if (move.direction === DirectionOptions.UP) {
                       y = y - 1;
-                    } else if (move.direction === DirectionOptions.UP) {
+                    } else if (move.direction === DirectionOptions.DOWN) {
                       y = y + 1;
                     } else if (move.direction === DirectionOptions.RIGHT) {
                       x = x + 1;
@@ -136,7 +137,7 @@ export const PacManView: FC = memo(() => {
                 }
                 await next({
                   to: {
-                    rotateZ,
+                    rotateZ: (negateZ * -1) * rotateZ,
                   },
                   config: {
                     duration: Math.min((Math.abs(degrees) / 90) * 500, 1000),
@@ -149,8 +150,9 @@ export const PacManView: FC = memo(() => {
             } else if (move.type === MoveType.REFLECTION) {
               if (move.axis && isNumber(move.n)) {
                 scale = scale === 0 ? 1 : 0;
+                negateZ = negateZ === 0 ? 1 : 0;
                 let diff = 0;
-                if (move.axis === AxisOptions.X) {
+                if (move.axis === AxisOptions.Y) {
                   if (direction === DirectionOptions.UP || direction === DirectionOptions.DOWN) {
                     direction = direction === DirectionOptions.UP ? DirectionOptions.DOWN : DirectionOptions.UP;
                   }

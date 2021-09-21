@@ -31,9 +31,19 @@ export const MovesView = memo(() => {
         ...prev.slice(ind + 1),
       ]);
     };
+    const onAdd = (ind: number) => () => {
+      setMovesState(prev => [
+        ...prev.slice(0, ind + 1),
+        {
+          key: getShortId(),
+        },
+        ...prev.slice(ind + 1)
+      ]);
+    };
     return [...Array(20)].map((_, i) => ({
       onChange: onChange(i),
       onRemove: onRemove(i),
+      onAdd: onAdd(i),
     }));
   }, []);
 
@@ -59,6 +69,7 @@ export const MovesView = memo(() => {
           disabled={!paused}
           move={move}
           {...changeHandlers[i]}
+          onAdd={i !== moves.length - 1 ? changeHandlers[i].onAdd : undefined}
         />
       ))}
       <div className="Controls">

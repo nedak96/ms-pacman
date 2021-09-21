@@ -2,7 +2,7 @@ import React, { FC, useCallback, useMemo } from 'react';
 import getShortId from 'shortid';
 import { Move, MoveType } from './types';
 import { FormControl, InputLabel, Select, MenuItem, SelectChangeEvent, IconButton } from '@mui/material';
-import { RemoveCircle } from '@mui/icons-material';
+import { AddCircle, RemoveCircle } from '@mui/icons-material';
 import './Moves.css';
 import { TranslationForm } from './TranslationForm';
 import { ReflectionForm } from './ReflectionForm';
@@ -13,6 +13,7 @@ interface Props {
   move: Move;
   onChange(move: Omit<Move, 'key'>): void;
   onRemove(): void;
+  onAdd?(): void;
 }
 
 export const MovesForm: FC<Props> = ({
@@ -20,6 +21,7 @@ export const MovesForm: FC<Props> = ({
   move,
   onChange,
   onRemove,
+  onAdd,
 }: Props) => {
   const labelId = useMemo(() => [getShortId(), getShortId(), getShortId()], []);
 
@@ -68,10 +70,19 @@ export const MovesForm: FC<Props> = ({
       <IconButton
         color="error"
         disabled={disabled}
-        className="RemoveButton"
+        className="IconButton"
         onClick={onRemove}>
         <RemoveCircle />
       </IconButton>
+      {onAdd && (
+        <IconButton
+          color="success"
+          disabled={disabled}
+          className="IconButton AddButton"
+          onClick={onAdd}>
+          <AddCircle />
+        </IconButton>
+      )}
     </div>
   );
 };
