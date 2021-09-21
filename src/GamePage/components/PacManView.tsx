@@ -11,7 +11,7 @@ export type PacManAnimationPhase = 0 | 1 | 2;
 
 export const PacManAnimationPhases: PacManAnimationPhase[] = [0, 1, 2];
 
-const directions = [DirectionOptions.LEFT, DirectionOptions.UP, DirectionOptions.RIGHT, DirectionOptions.DOWN];
+const directions = [DirectionOptions.LEFT, DirectionOptions.DOWN, DirectionOptions.RIGHT, DirectionOptions.UP];
 
 const pacManScreenFromTile = (tileCoordinates: TileCoordinates) => {
   const screenCoordinates = screenFromTile(tileCoordinates);
@@ -59,6 +59,7 @@ export const PacManView: FC = memo(() => {
 
   useEffect(() => {
     if (paused) {
+      api.stop();
       api.start({
         to: defaults,
         config: {
@@ -83,7 +84,7 @@ export const PacManView: FC = memo(() => {
       let y = 23;
       let scale = 0;
       let direction = DirectionOptions.LEFT;
-      let negateZ = 0;
+      let negateZ = 1;
       api.start({
         to: async (next) => {
           for (let i = 0; i < moves.length; i++) {
@@ -120,7 +121,7 @@ export const PacManView: FC = memo(() => {
             } else if (move.type === MoveType.ROTATION) {
               const degrees = Number(move.degrees);
               if (isNumber(degrees)) {
-                rotateZ = rotateZ + degrees;
+                rotateZ = rotateZ + degrees * (negateZ * -1);
                 switch (degrees) {
                   case -90:
                   case 270:
@@ -137,7 +138,7 @@ export const PacManView: FC = memo(() => {
                 }
                 await next({
                   to: {
-                    rotateZ: (negateZ * -1) * rotateZ,
+                    rotateZ,
                   },
                   config: {
                     duration: Math.min((Math.abs(degrees) / 90) * 500, 1000),
@@ -150,7 +151,7 @@ export const PacManView: FC = memo(() => {
             } else if (move.type === MoveType.REFLECTION) {
               if (move.axis && isNumber(move.n)) {
                 scale = scale === 0 ? 1 : 0;
-                negateZ = negateZ === 0 ? 1 : 0;
+                negateZ = negateZ === -1 ? 1 : -1;
                 let diff = 0;
                 if (move.axis === AxisOptions.Y) {
                   if (direction === DirectionOptions.UP || direction === DirectionOptions.DOWN) {
