@@ -20,6 +20,8 @@ export interface RotationMove {
   key: string;
   type?: MoveType.ROTATION,
   degrees?: DegreeOptions,
+  x?: number;
+  y?: number;
 }
 
 export enum AxisOptions {

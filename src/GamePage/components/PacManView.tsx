@@ -33,7 +33,6 @@ const getYTile = (y: number) => (y * -1) + 15;
 
 const STARTING_COORDINATES = pacManScreenFromTile({ x: 14, y: 23 });
 const defaults = {
-  scale: 0,
   rotateY: 0,
   rotateX: 0,
   rotateZ: 0,
@@ -52,7 +51,7 @@ export const PacManView: FC = memo(() => {
     eatPill(pacManTileFromScreen(value));
   }, [eatPill, setGameOver]);
 
-  const [{ x, y, scale, ...styles }, api] = useSpring(() => ({
+  const [{ x, y, ...styles }, api] = useSpring(() => ({
     from: defaults,
     onRest,
   }));
@@ -82,9 +81,7 @@ export const PacManView: FC = memo(() => {
       let rotateZ = 0;
       let x = 14;
       let y = 23;
-      let scale = 0;
       let direction = DirectionOptions.LEFT;
-      let negateZ = 1;
       api.start({
         to: async (next) => {
           for (let i = 0; i < moves.length; i++) {
@@ -120,8 +117,11 @@ export const PacManView: FC = memo(() => {
               }
             } else if (move.type === MoveType.ROTATION) {
               const degrees = Number(move.degrees);
-              if (isNumber(degrees)) {
-                rotateZ = rotateZ + degrees * (negateZ * -1);
+              if ([degrees, move.x, move.y].every(isNumber)) {
+                if (x !== getXTile(move.x!) || y !== getYTile(move.y!)) {
+                  setGameOver(true);
+                }
+                rotateZ = rotateZ + degrees * (((rotateX + rotateY) % 360) ? 1 : -1);
                 switch (degrees) {
                   case -90:
                   case 270:
@@ -150,35 +150,30 @@ export const PacManView: FC = memo(() => {
               }
             } else if (move.type === MoveType.REFLECTION) {
               if (move.axis && isNumber(move.n)) {
-                scale = scale === 0 ? 1 : 0;
-                negateZ = negateZ === -1 ? 1 : -1;
-                let diff = 0;
                 if (move.axis === AxisOptions.Y) {
+                  if (getYTile(move.n) !== y) {
+                    setGameOver(true);
+                  }
                   if (direction === DirectionOptions.UP || direction === DirectionOptions.DOWN) {
                     direction = direction === DirectionOptions.UP ? DirectionOptions.DOWN : DirectionOptions.UP;
                   }
                   rotateX = (rotateX + 180) % 360;
-                  const yTile = getYTile(move.n);
-                  diff = 2 * (yTile - y);
-                  y = y + diff;
                 } else {
+                  if (getXTile(move.n) !== x) {
+                    setGameOver(true);
+                  }
                   if (direction === DirectionOptions.LEFT || direction === DirectionOptions.RIGHT) {
                     direction = direction === DirectionOptions.LEFT ? DirectionOptions.RIGHT : DirectionOptions.LEFT;
                   }
                   rotateY = (rotateY + 180) % 360
-                  const xTile = getXTile(move.n);
-                  diff = 2 * (xTile - x);
-                  x = x + diff;
                 }
                 await next({
                   to: {
-                    scale,
                     rotateX,
                     rotateY,
-                    ...pacManScreenFromTile({ x, y }),
                   },
                     config: {
-                      duration: Math.max(Math.min(Math.abs(diff) * 300, 1500), 300),
+                      duration: 300,
                       easing: easeCubicInOut,
                     },
                 });
@@ -196,10 +191,7 @@ export const PacManView: FC = memo(() => {
     <AnimatedPacMan
       x={x}
       y={y}
-      style={{
-        scale: scale.to([0, .5, 1], [1, 1.15, 1]),
-        ...styles,
-      }}
+      style={styles}
     />
   );
 });
