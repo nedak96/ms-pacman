@@ -14,37 +14,32 @@ export const MovesView = memo(() => {
 
   const { unpause, setMoves, paused } = useContext(GameContext);
 
-  const changeHandlers = useMemo(() => {
-    const onChange = (ind: number) => (info: Omit<Move, 'key'>) => {
-      setMovesState(prev => [
-        ...prev.slice(0, ind),
-        {
-          ...info,
-          key: prev[ind].key,
-        },
-        ...prev.slice(ind + 1),
-      ]);
-    };
-    const onRemove = (ind: number) => () => {
-      setMovesState(prev => [
-        ...prev.slice(0, ind),
-        ...prev.slice(ind + 1),
-      ]);
-    };
-    const onAdd = (ind: number) => () => {
-      setMovesState(prev => [
-        ...prev.slice(0, ind + 1),
-        {
-          key: getShortId(),
-        },
-        ...prev.slice(ind + 1)
-      ]);
-    };
-    return [...Array(20)].map((_, i) => ({
-      onChange: onChange(i),
-      onRemove: onRemove(i),
-      onAdd: onAdd(i),
-    }));
+  const onChange = useCallback((ind: number, info: Omit<Move, 'key'>) => {
+    setMovesState(prev => [
+      ...prev.slice(0, ind),
+      {
+        ...info,
+        key: prev[ind].key,
+      },
+      ...prev.slice(ind + 1),
+    ]);
+  }, []);
+
+  const onRemove = useCallback((ind: number) => {
+    setMovesState(prev => [
+      ...prev.slice(0, ind),
+      ...prev.slice(ind + 1),
+    ]);
+  }, []);
+
+  const onAdd = useCallback((ind: number) => {
+    setMovesState(prev => [
+      ...prev.slice(0, ind + 1),
+      {
+        key: getShortId(),
+      },
+      ...prev.slice(ind + 1)
+    ]);
   }, []);
 
   const addMove = useCallback(() => {
@@ -68,8 +63,10 @@ export const MovesView = memo(() => {
           key={move.key}
           disabled={!paused}
           move={move}
-          {...changeHandlers[i]}
-          onAdd={i !== moves.length - 1 ? changeHandlers[i].onAdd : undefined}
+          onChange={onChange}
+          onRemove={onRemove}
+          onAdd={i !== moves.length - 1 ? onAdd : undefined}
+          ind={i}
         />
       ))}
       <div className="Controls">

@@ -11,25 +11,32 @@ import { RotationForm } from './RotationForm';
 interface Props {
   disabled: boolean;
   move: Move;
-  onChange(move: Omit<Move, 'key'>): void;
-  onRemove(): void;
-  onAdd?(): void;
+  onChange(ind: number, move: Omit<Move, 'key'>): void;
+  onRemove(ind: number): void;
+  onAdd?(ind: number): void;
+  ind: number;
 }
 
 export const MovesForm: FC<Props> = ({
   disabled,
   move,
-  onChange,
-  onRemove,
-  onAdd,
+  onChange: handleOnChange,
+  onRemove: handleOnRemove,
+  onAdd: handleOnAdd,
+  ind,
 }: Props) => {
   const labelId = useMemo(() => [getShortId(), getShortId(), getShortId()], []);
+
+  const onChange = useCallback((move: Omit<Move, 'key'>) => handleOnChange(ind, move), [ind, handleOnChange]);
 
   const onTypeChange = useCallback((e: SelectChangeEvent) => {
     onChange({
       type: e.target.value as MoveType,
     });
-  }, [onChange]);
+  }, [onChange, ind]);
+
+  const onRemove = useCallback(() => handleOnRemove(ind), [ind, handleOnRemove]);
+  const onAdd = useCallback(() => handleOnAdd && handleOnAdd(ind), [ind, handleOnAdd]);
 
   return (
     <div className="MoveForm">
@@ -74,7 +81,7 @@ export const MovesForm: FC<Props> = ({
         onClick={onRemove}>
         <RemoveCircle />
       </IconButton>
-      {onAdd && (
+      {handleOnAdd && (
         <IconButton
           color="success"
           disabled={disabled}
