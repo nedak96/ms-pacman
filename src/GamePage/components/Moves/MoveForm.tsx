@@ -25,7 +25,7 @@ export const MovesForm: FC<Props> = ({
   onAdd: handleOnAdd,
   ind,
 }: Props) => {
-  const labelId = useMemo(() => [getShortId(), getShortId(), getShortId()], []);
+  const labelId = useMemo(getShortId, []);
 
   const onChange = useCallback((move: Omit<Move, 'key'>) => handleOnChange(ind, move), [ind, handleOnChange]);
 
@@ -41,9 +41,9 @@ export const MovesForm: FC<Props> = ({
   return (
     <div className="MoveForm">
       <FormControl className="TypeCell">
-        <InputLabel id={labelId[0]}>Type</InputLabel>
+        <InputLabel id={labelId}>Type</InputLabel>
         <Select
-          labelId={labelId[0]}
+          labelId={labelId}
           disabled={disabled}
           onChange={onTypeChange}
           value={move.type || ''}
